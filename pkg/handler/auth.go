@@ -6,17 +6,17 @@ import (
 	"net/http"
 )
 
-func (h *Handler) signUp(c *gin.Context)  {
+func (h *Handler) signUp(c *gin.Context) {
 	var input todo.User
 	if err := c.BindJSON(&input); err != nil {
-		NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
 
 		return
 	}
 
 	id, err := h.service.Authorization.CreateUser(input)
 	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -30,17 +30,17 @@ type signInInput struct {
 	Password string `json:"password" binding:"required"`
 }
 
-func (h *Handler) signIn(c *gin.Context)  {
+func (h *Handler) signIn(c *gin.Context) {
 	var input signInInput
 	if err := c.BindJSON(&input); err != nil {
-		NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
 
 		return
 	}
 
 	token, err := h.service.Authorization.GenerateToken(input.Username, input.Password)
 	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
